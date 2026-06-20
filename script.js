@@ -288,3 +288,44 @@ window.onload = function () {
     loadVolunteers();
 
 };
+
+function exportCSV() {
+
+    const volunteers =
+    JSON.parse(localStorage.getItem("volunteers")) || [];
+
+    if (volunteers.length === 0) {
+        alert("No volunteer data available!");
+        return;
+    }
+
+    let csv =
+    "Name,Email,Phone,College,Department,Reason,Registered On\n";
+
+    volunteers.forEach(v => {
+
+        csv += `"${v.name}","${v.email}","${v.phone}","${v.college}","${v.department}","${v.reason}","${v.registeredAt}"\n`;
+
+    });
+
+    const blob =
+    new Blob([csv], { type: "text/csv" });
+
+    const url =
+    window.URL.createObjectURL(blob);
+
+    const a =
+    document.createElement("a");
+
+    a.href = url;
+
+    a.download =
+    "volunteers_report.csv";
+
+    document.body.appendChild(a);
+
+    a.click();
+
+    document.body.removeChild(a);
+
+}
